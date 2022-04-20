@@ -2,37 +2,39 @@
 using System.Collections.Generic;
 using System.Security.Cryptography;
 
-namespace TetrisConsole {
-    internal class Shape {
-        
-        private int width;
-        private int height;
+namespace TetrisConsole
+{
+    abstract class Shape
+    {
         //private Color color
-        private List<ShapeComponent> components;
+        protected List<ShapeComponent> components;
+        protected ShapeEnum type;
+        protected Direction facing;
 
-        public Shape(int maxWidth, int maxHeight) {
-            this.width = GetRandomNumber(1, maxWidth);
-            this.height = GetRandomNumber(1, maxHeight);
+        public Shape()
+        {
             components = new List<ShapeComponent>();
-            GenerateShape();
+            facing = Direction.UP;
         }
 
-        private void GenerateShape() {
-            Console.WriteLine("width: " + width + ", height: " + height);
-        }
+        public abstract void RotateRight();
 
-        public void Move(Direction d) {
-            foreach (ShapeComponent c in components) {
+        public void MoveShape(Direction d)
+        {
+            foreach (ShapeComponent c in components)
+            {
                 c.Move(d);
             }
         }
 
-        private int GetRandomNumber(int min, int max) {
-            RandomNumberGenerator rng = RandomNumberGenerator.Create();
-            byte[] randNum = new byte[4];
-            rng.GetBytes(randNum);
-            return Math.Abs(BitConverter.ToInt32(randNum, 0)) % max-min+1 + min;
+        protected ShapeComponent GetComponentById(int id)
+        {
+            return components.Find(elem => elem.id == id);
         }
-
+        protected ShapeComponent GCBI(int id)
+        {
+            return GetComponentById(id);
+        }
+        
     }
 }

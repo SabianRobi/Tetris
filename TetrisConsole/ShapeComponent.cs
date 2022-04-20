@@ -8,10 +8,12 @@ namespace TetrisConsole {
     internal class ShapeComponent {
         private int x;
         private int y;
+        public int id;
 
-        public ShapeComponent(int x, int y) {
+        public ShapeComponent(int x, int y, int id) {
             this.x = x;
             this.y = y;
+            this.id = id;
         }
 
         public void Move(Direction d) {
@@ -23,15 +25,23 @@ namespace TetrisConsole {
                     this.y -= 1;
                     break;
                 case Direction.LEFT:
-                    this.x += 1;
+                    this.x -= 1;
                     break;
                 case Direction.RIGHT:
-                    this.x -= 1;
+                    this.x += 1;
                     break;
             }
         }
 
         public int GetX() { return x; }
         public int GetY() { return y; }
+        public void SetX(int x) { this.x = x; }
+        public void SetY(int y) { this.y = y; }
+
+        public void MoveCoord(int x, int y)
+        {
+            this.x += x;
+            this.y += y;
+        }
     }
 }
