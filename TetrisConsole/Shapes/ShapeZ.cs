@@ -10,46 +10,44 @@ namespace TetrisConsole.Shapes
     {
         public ShapeZ()
         {
-            type = ShapeEnum.Z;
-            components.Add(new ShapeComponent(0, 2, 1));
-            components.Add(new ShapeComponent(1, 2, 2));
-            components.Add(new ShapeComponent(1, 1, 3));
-            components.Add(new ShapeComponent(2, 1, 4));
+            Type = ShapeEnum.Z;
+            Components.Add(new ShapeComponent(0, 2, 1, this));
+            Components.Add(new ShapeComponent(1, 2, 2, this));
+            Components.Add(new ShapeComponent(1, 1, 3, this));
+            Components.Add(new ShapeComponent(2, 1, 4, this));
         }
-
 
         public override void RotateRight()
         {
-            switch (facing)
-            {
+            switch (Facing)
+            { 
                 case Direction.UP:
-                    facing = Direction.RIGHT;
-                    GCBI(1).MoveCoord(2,0);
-                    GCBI(2).MoveCoord(1,-1);
-                    GCBI(4).MoveCoord(-1,-1);
+                    Facing = Direction.RIGHT;
+                    GCBI(1).MoveCoord(2, 0);
+                    GCBI(2).MoveCoord(1, -1);
+                    GCBI(4).MoveCoord(-1, -1);
                     break;
 
                 case Direction.RIGHT:
-                    facing = Direction.DOWN;
-                    GCBI(1).MoveCoord(0,-2);
-                    GCBI(2).MoveCoord(-1,-1);
-                    GCBI(4).MoveCoord(-1,1);
+                    Facing = Direction.DOWN;
+                    GCBI(1).MoveCoord(0, -2);
+                    GCBI(2).MoveCoord(-1, -1);
+                    GCBI(4).MoveCoord(-1, 1);
                     break;
 
                 case Direction.DOWN:
-                    facing = Direction.LEFT;
-                    GCBI(1).MoveCoord(-2,0);
-                    GCBI(2).MoveCoord(-1,1);
-                    GCBI(4).MoveCoord(1,1);
+                    Facing = Direction.LEFT;
+                    GCBI(1).MoveCoord(-2, 0);
+                    GCBI(2).MoveCoord(-1, 1);
+                    GCBI(4).MoveCoord(1, 1);
                     break;
 
                 case Direction.LEFT:
-                    facing = Direction.UP;
-                    GCBI(1).MoveCoord(0,2);
-                    GCBI(2).MoveCoord(1,1);
-                    GCBI(4).MoveCoord(1,-1);
+                    Facing = Direction.UP;
+                    GCBI(1).MoveCoord(0, 2);
+                    GCBI(2).MoveCoord(1, 1);
+                    GCBI(4).MoveCoord(1, -1);
                     break;
-
                 default:
                     break;
             }

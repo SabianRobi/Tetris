@@ -1,47 +1,45 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using TetrisConsole.Misc;
 
 namespace TetrisConsole {
     internal class ShapeComponent {
-        private int x;
-        private int y;
+        public int X { get; set; }
+        public int Y { get; set; }
+        public Shape Shape { get; set; }
         public int id;
 
-        public ShapeComponent(int x, int y, int id) {
-            this.x = x;
-            this.y = y;
+        public ShapeComponent(int X, int Y, int id, Shape Shape) {
+            this.X = X;
+            this.Y = Y;
             this.id = id;
+            this.Shape = Shape;
         }
 
         public void Move(Direction d) {
             switch (d) {
                 case Direction.UP:
-                    this.y += 1;
+                    Y += 1;
                     break;
                 case Direction.DOWN:
-                    this.y -= 1;
+                    Y -= 1;
                     break;
                 case Direction.LEFT:
-                    this.x -= 1;
+                    X -= 1;
                     break;
                 case Direction.RIGHT:
-                    this.x += 1;
+                    X += 1;
                     break;
             }
         }
 
-        public int GetX() { return x; }
-        public int GetY() { return y; }
-        public void SetX(int x) { this.x = x; }
-        public void SetY(int y) { this.y = y; }
-
         public void MoveCoord(int x, int y)
         {
-            this.x += x;
-            this.y += y;
+            this.X += x;
+            this.Y += y;
+        }
+
+        public Point GetCoord()
+        {
+            return new Point(X, Y);
         }
     }
 }

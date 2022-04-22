@@ -10,19 +10,19 @@ namespace TetrisConsole.Shapes
     {
         public ShapeI()
         {
-            type = ShapeEnum.I;
-            components.Add(new ShapeComponent(1, 3, 1));
-            components.Add(new ShapeComponent(1, 2, 2));
-            components.Add(new ShapeComponent(1, 1, 3));
-            components.Add(new ShapeComponent(1, 0, 4));
+            Type = ShapeEnum.I;
+            Components.Add(new ShapeComponent(1, 3, 1, this));
+            Components.Add(new ShapeComponent(1, 2, 2, this));
+            Components.Add(new ShapeComponent(1, 1, 3, this));
+            Components.Add(new ShapeComponent(1, 0, 4, this));
         }
 
         public override void RotateRight()
         {
-            switch (facing)
+            switch (Facing)
             {
                 case Direction.UP:
-                    facing = Direction.RIGHT;
+                    Facing = Direction.RIGHT;
                     GCBI(1).MoveCoord(2, -1);
                     GCBI(2).MoveCoord(1, 0);
                     GCBI(3).MoveCoord(0, 1);
@@ -30,7 +30,7 @@ namespace TetrisConsole.Shapes
                     break;
 
                 case Direction.RIGHT:
-                    facing = Direction.DOWN;
+                    Facing = Direction.DOWN;
                     GCBI(1).MoveCoord(-1, -2);
                     GCBI(2).MoveCoord(0, -1);
                     GCBI(3).MoveCoord(1, 0);
@@ -38,17 +38,17 @@ namespace TetrisConsole.Shapes
                     break;
 
                 case Direction.DOWN:
-                    facing = Direction.LEFT;
+                    Facing = Direction.LEFT;
                     GCBI(1).MoveCoord(-2, 1);
                     GCBI(2).MoveCoord(-1, 0);
-                    GCBI(3).MoveCoord(1, 1);
+                    GCBI(3).MoveCoord(0, -1);
                     GCBI(4).MoveCoord(1, -2);
                     break;
 
                 case Direction.LEFT:
-                    facing = Direction.UP;
+                    Facing = Direction.UP;
                     GCBI(1).MoveCoord(1, 2);
-                    GCBI(2).MoveCoord(1, 1);
+                    GCBI(2).MoveCoord(0, 1);
                     GCBI(3).MoveCoord(-1, 0);
                     GCBI(4).MoveCoord(-2, -1);
                     break;

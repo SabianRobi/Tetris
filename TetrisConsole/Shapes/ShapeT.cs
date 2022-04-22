@@ -10,40 +10,40 @@ namespace TetrisConsole.Shapes
     {
         public ShapeT()
         {
-            type = ShapeEnum.T;
-            components.Add(new ShapeComponent(1, 2, 1));
-            components.Add(new ShapeComponent(0, 1, 2));
-            components.Add(new ShapeComponent(1, 1, 3));
-            components.Add(new ShapeComponent(2, 1, 4));
+            Type = ShapeEnum.T;
+            Components.Add(new ShapeComponent(1, 2, 1, this));
+            Components.Add(new ShapeComponent(0, 1, 2, this));
+            Components.Add(new ShapeComponent(1, 1, 3, this));
+            Components.Add(new ShapeComponent(2, 1, 4, this));
         }
 
         public override void RotateRight()
         {
-            switch (facing)
+            switch (Facing)
             {
                 case Direction.UP:
-                    facing = Direction.RIGHT;
+                    Facing = Direction.RIGHT;
                     GCBI(1).MoveCoord(1, -1);
                     GCBI(2).MoveCoord(1, 1);
                     GCBI(4).MoveCoord(-1, -1);
                     break;
 
                 case Direction.RIGHT:
-                    facing = Direction.DOWN;
+                    Facing = Direction.DOWN;
                     GCBI(1).MoveCoord(-1, -1);
                     GCBI(2).MoveCoord(1, -1);
                     GCBI(4).MoveCoord(-1, 1);
                     break;
 
                 case Direction.DOWN:
-                    facing = Direction.LEFT;
+                    Facing = Direction.LEFT;
                     GCBI(1).MoveCoord(-1, 1);
                     GCBI(2).MoveCoord(-1, -1);
                     GCBI(4).MoveCoord(1, 1);
                     break;
 
                 case Direction.LEFT:
-                    facing = Direction.UP;
+                    Facing = Direction.UP;
                     GCBI(1).MoveCoord(1, 1);
                     GCBI(2).MoveCoord(-1, 1);
                     GCBI(4).MoveCoord(1, -1);
