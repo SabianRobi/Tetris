@@ -1,0 +1,13 @@
+[x] Add KeyBoardListners
+[x] Let the shapes stop at the bottom
+[x] Add GUI
+[x] Add colors to shapes
+[X] Fix moving shapes into other shape from side
+
+NEXT:
+[ ] Add examnition if the newly created shape can fit onto map or not (lose game)
+[ ] Fix rotating shape into each other
+[ ] Remove Back arrow from main page when returning from game
+[ ] Bind values to GUI
+[ ] Display the next shape
+[ ] Add Unit tests

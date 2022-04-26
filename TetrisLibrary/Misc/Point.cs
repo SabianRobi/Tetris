@@ -1,6 +1,6 @@
-﻿namespace TetrisConsole.Misc
+﻿namespace TetrisLibrary.Misc
 {
-    internal class Point
+    public class Point
     {
         public int X { get; set; }
         public int Y { get; set; }

@@ -1,7 +1,7 @@
-﻿using TetrisConsole.Misc;
+﻿using TetrisLibrary.Misc;
 
-namespace TetrisConsole {
-    internal class ShapeComponent {
+namespace TetrisLibrary {
+    public class ShapeComponent {
         public int X { get; set; }
         public int Y { get; set; }
         public Shape Shape { get; set; }
@@ -40,6 +40,11 @@ namespace TetrisConsole {
         public Point GetCoord()
         {
             return new Point(X, Y);
+        }
+
+        public ShapeComponent GetCopy(Shape shape)
+        {
+            return new ShapeComponent(X, Y, id, shape);
         }
     }
 }

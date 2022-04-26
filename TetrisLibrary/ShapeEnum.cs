@@ -1,6 +1,6 @@
-﻿namespace TetrisConsole
+﻿namespace TetrisLibrary
 {
-    internal enum ShapeEnum
+    public enum ShapeEnum
     {
         I,
         O,

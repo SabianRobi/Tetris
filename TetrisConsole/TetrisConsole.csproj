@@ -43,24 +43,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Misc\Direction.cs" />
-    <Compile Include="GameEngine.cs" />
-    <Compile Include="Misc\Point.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Shape.cs" />
-    <Compile Include="ShapeComponent.cs" />
-    <Compile Include="ShapeEnum.cs" />
-    <Compile Include="Shapes\ShapeJ.cs" />
-    <Compile Include="Shapes\ShapeL.cs" />
-    <Compile Include="Shapes\ShapeZ.cs" />
-    <Compile Include="Shapes\ShapeS.cs" />
-    <Compile Include="Shapes\ShapeT.cs" />
-    <Compile Include="Shapes\ShapeO.cs" />
-    <Compile Include="Shapes\ShapeI.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\TetrisLibrary\TetrisLibrary.csproj">
+      <Project>{33ecd251-21eb-4160-9e4b-d23f5626c181}</Project>
+      <Name>TetrisLibrary</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

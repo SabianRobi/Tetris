@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using TetrisLibrary.Misc;
 
-namespace TetrisConsole.Shapes
+namespace TetrisLibrary.Shapes
 {
     internal class ShapeO : Shape
     { 
@@ -17,6 +14,9 @@ namespace TetrisConsole.Shapes
             Components.Add(new ShapeComponent(1, 1, 4, this));
         }
 
-        public override void RotateRight() { }
+        public override List<IPoint> AfterRotateRightPoss()
+        {
+            return new List<IPoint>();
+        }
     }
 }
