@@ -87,7 +87,7 @@ namespace TetrisLibrary
             }
         }
 
-        private Shape CreateShape(object o = null)
+        private bool CreateShape(object o = null)
         {
             ShapeEnum shapeEnum;
             if (o != null)
@@ -124,10 +124,16 @@ namespace TetrisLibrary
                     break;
             }
             shape.MoveShapeTopTo(MAPCENTER);
+            if (shape.Components.Exists(comp =>
+             {
+                 return fields[comp.X, comp.Y] != null;
+             })) {
+                return false;
+            }
             UpdateShapePos(shape);
             shapes.Add(shape);
             current = shape;
-            return shape;
+            return true;
         }
 
         //It moves if it can
@@ -254,81 +260,30 @@ namespace TetrisLibrary
             }
         }
 
-        //TODO DOING: It rotates (when it can)
+        //It rotates if it can
         public void RotateRight()
         {
             isRotating = true;
             bool canRotate = true;
 
-            //Műxik, csak map szélén bugos, nem "tolja" vissza a pályára mielőtt tesztelni
-            List<IPoint> relCoords = new List<IPoint>();
-            relCoords.AddRange(current.AfterRotateRightPoss());
-            for (int i = 0; i < 4; i++)
-            {
-                if(current.Components.Exists(p => p.id == i+1))
-                {
-                    Log("van current componens");
-                    if(relCoords.Exists(p => p.id == i+1))
-                    {
-                        Log("a komponens forgatható");
-                        if (fields[current.GCBI(i + 1).X + relCoords.Find(p => p.id == i+1).p.X, current.GCBI(i + 1).Y + relCoords.Find(p => p.id == i + 1).p.Y] != null)
-                        {
-                            Log("van valami after forgatás mezőjén");
-                            if(fields[current.GCBI(i + 1).X + relCoords.Find(p => p.id == i + 1).p.X, current.GCBI(i + 1).Y + relCoords.Find(p => p.id == i + 1).p.Y].Shape != current)
-                            {
-                                Log("Ütközik");
-                                canRotate = false;
-                            }
-                        }
-                        
-                    }
-                }
-            }
-
-
-
-
-
-
-
-
-            /* v2
-            Shape backupShape = current.GetCopy();
-            current.RotateRight();
-            AlignShapeBackToMap(current);
-            foreach (ShapeComponent component in current.Components)
-            {
-                if( fields[component.X, component.Y] != null &&
-                    fields[component.X, component.Y].Shape != current)
-                {
-                    canRotate = false;
-                }
-            }
-            if (!canRotate)
-            {
-                current = backupShape;
-            }
-            */
-
-
-            /* v1
-
             Shape testShape = current.GetCopy();
             testShape.RotateRight();
             AlignShapeBackToMap(testShape);
 
-            foreach (ShapeComponent testComponent in testShape.Components)
+            foreach (ShapeComponent component in testShape.Components)
             {
-                if (testComponent.X < 0 || testComponent.X > MAPWIDTH - 1 ||
-                        testComponent.Y < 0 || testComponent.Y > MAPHEIGHT - 1 ||
-                        (fields[testComponent.X, testComponent.Y] != null &&
-                        fields[testComponent.X, testComponent.Y].Shape != current))
-                        //!current.Components.Exists(c => c.X == testComponent.X && c.Y == testComponent.Y)))
+                Log("Komponens vizsgálat:"+ component.X + ", "+component.Y);
+                if(fields[component.X, component.Y] != null)
                 {
-                    canRotate = false;
+                    Log("Van ott valami");
+                    if (fields[component.X, component.Y].Shape != current)
+                    {
+                        Log("Nem én vagyok ott");
+                        canRotate = false;
+                    }
                 }
             }
-            */
+
             if(canRotate)
             {
                 current.RotateRight();
@@ -344,33 +299,35 @@ namespace TetrisLibrary
 
         private void AlignShapeBackToMap(Shape shape)
         {
-            Log("Aligning back:");
-            foreach (ShapeComponent component in shape.Components)
+            if(!shape.Components.Exists(comp => comp.X < 0 || comp.X > MAPWIDTH-1 || comp.Y < 0 || comp.Y > MAPHEIGHT-1))
             {
-                if (component.X < 0)
-                {
-                    int amount = Math.Abs(component.X);
-                    Log("Moving right " + amount);
-                    MoveShape(shape, Direction.RIGHT, amount, false);
-                } else if (component.X > MAPWIDTH - 1)
-                {
-                    int amount = component.X - MAPWIDTH - 1/* + 1*/;
-                    Log("Moving left " + amount);
-                    MoveShape(shape, Direction.LEFT, amount, false);
-                }
-
-                if (component.Y < 0)
-                {
-                    int amount = Math.Abs(component.Y);
-                    Log("Moving up " + amount);
-                    MoveShape(shape, Direction.UP, amount, false);
-                } else if (component.Y > MAPHEIGHT - 1)
-                {
-                    int amount = component.Y - MAPHEIGHT - 1;
-                    Log("Moving down " + amount);
-                    MoveShape(shape, Direction.DOWN, amount, false);
-                }
+                Log("Alignment not needed");
+                return;
             }
+            Log("Alignment needed");
+            shape.Components.ForEach(comp =>
+            {
+                if(comp.X < 0)
+                {
+                    Log("Moving right " + Math.Abs(comp.X));
+                    shape.Move(Direction.RIGHT, Math.Abs(comp.X));
+                }
+                else if (comp.X > MAPWIDTH-1)
+                {
+                    Log("Moving left " + (comp.X - (MAPWIDTH - 1)));
+                    shape.Move(Direction.LEFT, comp.X-(MAPWIDTH-1));
+                }
+                if(comp.Y < 0)
+                {
+                    Log("Moving up" + Math.Abs(comp.Y));
+                    shape.Move(Direction.UP, Math.Abs(comp.Y));
+                }
+                else if(comp.Y > MAPHEIGHT-1)
+                {
+                    Log("Moving down " + (comp.Y - (MAPHEIGHT - 1)));
+                    shape.Move(Direction.DOWN, comp.Y - (MAPHEIGHT - 1));
+                }
+            });
         }
 
         private void DrawMapToConsole()
@@ -422,7 +379,7 @@ namespace TetrisLibrary
             SimulateTimerTick();
         }
 
-        public void SimulateTimerTick()
+        public bool SimulateTimerTick()
         {
             while (isRotating || isMoving) { }
             tick++;
@@ -438,7 +395,7 @@ namespace TetrisLibrary
                         Log("Shape arrived down");
                         shape.IsAtBottom = true;
                         createNewShape = true;
-                        moveShapesDown = ExamineRows(ref things);
+                        moveShapesDown = ExamineRows(things);
                         Log("Got the value back: " + moveShapesDown);
                     }
                 }
@@ -446,18 +403,11 @@ namespace TetrisLibrary
 
             foreach (Shape shape in things.toRemoveShapes)
             {
-                //shape.Die();
                 shapes.Remove(shape);
             }
 
             if (moveShapesDown)
             {
-                /*
-                foreach (Shape shape in shapes)
-                {
-                    //MoveShape(shape, Direction.DOWN, 1, true);
-                }
-                */
                 things.rowsDeleted.Sort();
                 things.rowsDeleted.Reverse();
                 for (int i = 0; i < things.rowsDeleted.Count; i++)
@@ -468,13 +418,18 @@ namespace TetrisLibrary
 
             if (createNewShape)
             {
-                CreateShape();
+                if(!CreateShape())
+                {
+                    EndGame();
+                    return true;
+                }
             }
 
             DrawMapToConsole();
+            return false;
         }
 
-        private bool ExamineRows(ref ExamineThings things)
+        private bool ExamineRows(ExamineThings things)
         {
             Log("Examining rows");
             bool isFilled;
@@ -505,15 +460,6 @@ namespace TetrisLibrary
                             things.toRemoveShapes.Add(shape);
                         }
                     }
-                    /*
-                    foreach (Shape shape in shapes)
-                    {
-                        if(!toRemoveShapes.Contains(shape))
-                        {
-                            MoveShape(shape, Direction.DOWN, 1, false);
-                        }
-                    }
-                    */
                     score += MAPWIDTH * 10;
                 }
             }
@@ -543,6 +489,14 @@ namespace TetrisLibrary
             {
                 toRemoveShapes = new List<Shape>();
                 rowsDeleted = new List<int>();
+            }
+        }
+
+        private void EndGame()
+        {
+            if(isConsole)
+            {
+                timer.Stop();
             }
         }
 

@@ -95,6 +95,11 @@ namespace TetrisUWP
             timer.Enabled = true;
         }
 
+        private void EndGame()
+        {
+            timer.Stop();
+        }
+
         private async Task UpdateCanvasAsync()
         {
             await Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
@@ -157,7 +162,10 @@ namespace TetrisUWP
 
         public async void OnTimerTick(Object source, ElapsedEventArgs e)
         {
-            game.SimulateTimerTick();
+            if(game.SimulateTimerTick())
+            {
+                EndGame();
+            }
             await UpdateCanvasAsync();
         }
 

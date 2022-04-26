@@ -171,6 +171,7 @@ namespace TetrisLibrary
                     break;
             }
             copy.Facing = Facing;
+            copy.Components.Clear();
             foreach (ShapeComponent component in Components)
             {
                 copy.Components.Add(component.GetCopy(copy));

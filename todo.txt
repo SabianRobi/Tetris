@@ -3,10 +3,11 @@
 [x] Add GUI
 [x] Add colors to shapes
 [X] Fix moving shapes into other shape from side
+[x] Fix rotating shape into each other
+[x] Add examnition if the newly created shape can fit onto map or not (lose game)
 
 NEXT:
-[ ] Add examnition if the newly created shape can fit onto map or not (lose game)
-[ ] Fix rotating shape into each other
+[ ] Stop the keyboard buttons work when game is over
 [ ] Remove Back arrow from main page when returning from game
 [ ] Bind values to GUI
 [ ] Display the next shape
