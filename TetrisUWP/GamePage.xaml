@@ -26,15 +26,15 @@
         </Grid.RowDefinitions>
         <StackPanel Grid.Row="1" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center">
             <TextBlock Foreground="White"  FontFamily="Bahnschrift" FontSize="48" Text="Score"/>
-            <TextBlock x:Name="txt_score" Foreground="AntiqueWhite" HorizontalAlignment="Center" VerticalAlignment="Center" FontFamily="Bahnschrift" FontSize="40" Text="500"/>
+            <TextBlock x:Name="txt_score" Foreground="AntiqueWhite" HorizontalAlignment="Center" VerticalAlignment="Center" FontFamily="Bahnschrift" FontSize="40" Text="0"/>
         </StackPanel>
         <StackPanel Grid.Row="2" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center">
             <TextBlock Foreground="White" FontFamily="Bahnschrift" FontSize="48" Text="Lines"/>
-            <TextBlock x:Name="txt_lines" Foreground="AntiqueWhite" HorizontalAlignment="Center" VerticalAlignment="Center" FontFamily="Bahnschrift" FontSize="40" Text="3"/>
+            <TextBlock x:Name="txt_lines" Foreground="AntiqueWhite" HorizontalAlignment="Center" VerticalAlignment="Center" FontFamily="Bahnschrift" FontSize="40" Text="0"/>
         </StackPanel>
         <StackPanel Grid.Row="1" Grid.Column="5" HorizontalAlignment="Center" VerticalAlignment="Center">
             <TextBlock Foreground="White" FontFamily="Bahnschrift" FontSize="48" Text="Next shape"/>
-            <TextBlock x:Name="txt_nextShape" Foreground="AntiqueWhite" HorizontalAlignment="Center" VerticalAlignment="Center" FontFamily="Bahnschrift" FontSize="40" Text="L"/>
+            <Canvas x:Name="canvas_nextShape" Background="DarkGray" Width="90" Height="120" />
         </StackPanel>
 
         <Canvas Grid.Row="1" Grid.Column="3" Grid.RowSpan="2" x:Name="canvas"

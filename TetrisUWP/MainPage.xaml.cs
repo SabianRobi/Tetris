@@ -1,4 +1,5 @@
-﻿using Windows.UI.Xaml;
+﻿using Windows.UI.Core;
+using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 
 namespace TetrisUWP
@@ -8,6 +9,10 @@ namespace TetrisUWP
         public MainPage()
         {
             InitializeComponent();
+
+            //GoBack button windows
+            var view = SystemNavigationManager.GetForCurrentView();
+            view.AppViewBackButtonVisibility = AppViewBackButtonVisibility.Disabled;
         }
 
         private void btn_Play_Click(object sender, RoutedEventArgs e)

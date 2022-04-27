@@ -17,12 +17,14 @@ namespace TetrisLibrary
         private RandomNumberGenerator rng;
         private byte[] randNum;
         private int tick;
-        public Shape current { get; set; }
+        public Shape currentShape { get; private set; }
+        public Shape nextShape { get; private set; }
         private bool isConsole;
         private Timer timer;
         private bool isRotating;
         private bool isMoving;
-        public int score;
+        public int score { get; private set; }
+        public int lines { get; private set; }
         private bool debug;
 
         public GameEngine(bool isConsole = false, bool debug = false) {
@@ -43,6 +45,8 @@ namespace TetrisLibrary
             rng = RandomNumberGenerator.Create();
             randNum = new byte[4];
             tick = 0;
+            currentShape = null;
+            nextShape = null;
             this.isConsole = isConsole;
             if (isConsole)
             {
@@ -72,10 +76,10 @@ namespace TetrisLibrary
                     key = Console.ReadKey();
                     if (key.Key == ConsoleKey.LeftArrow || key.Key == ConsoleKey.A)
                     {
-                        MoveShape(current, Direction.LEFT);
+                        MoveShape(currentShape, Direction.LEFT);
                     } else if (key.Key == ConsoleKey.RightArrow || key.Key == ConsoleKey.D)
                     {
-                        MoveShape(current, Direction.RIGHT);
+                        MoveShape(currentShape, Direction.RIGHT);
                     } else if (key.Key == ConsoleKey.UpArrow || key.Key == ConsoleKey.W)
                     {
                         RotateRight();
@@ -84,6 +88,7 @@ namespace TetrisLibrary
                         SimulateTimerTick();
                     }
                 }
+                Console.ReadKey();
             }
         }
 
@@ -97,42 +102,53 @@ namespace TetrisLibrary
             {
                 shapeEnum = (ShapeEnum)GetRandomNumber(0, Enum.GetValues(typeof(ShapeEnum)).Length - 1);
             }
-            Shape shape = null;
+            Shape newShape = null;
 
             switch (shapeEnum)
             {
                 case ShapeEnum.I:
-                    shape = new ShapeI();
+                    newShape = new ShapeI();
                     break;
                 case ShapeEnum.O:
-                    shape = new ShapeO();
+                    newShape = new ShapeO();
                     break;
                 case ShapeEnum.T:
-                    shape = new ShapeT();
+                    newShape = new ShapeT();
                     break;
                 case ShapeEnum.S:
-                    shape = new ShapeS();
+                    newShape = new ShapeS();
                     break;
                 case ShapeEnum.Z:
-                    shape = new ShapeZ();
+                    newShape = new ShapeZ();
                     break;
                 case ShapeEnum.J:
-                    shape = new ShapeJ();
+                    newShape = new ShapeJ();
                     break;
                 case ShapeEnum.L:
-                    shape = new ShapeL();
+                    newShape = new ShapeL();
                     break;
             }
-            shape.MoveShapeTopTo(MAPCENTER);
-            if (shape.Components.Exists(comp =>
-             {
-                 return fields[comp.X, comp.Y] != null;
-             })) {
-                return false;
+            
+            currentShape = nextShape;
+            nextShape = newShape;
+            if(currentShape == null)
+            {
+                CreateShape();
             }
-            UpdateShapePos(shape);
-            shapes.Add(shape);
-            current = shape;
+            else
+            {
+                currentShape.MoveShapeTopTo(MAPCENTER);
+                if (currentShape.Components.Exists(comp =>
+                {
+                    return fields[comp.X, comp.Y] != null;
+                }))
+                {
+                    return false;
+                }
+                UpdateShapePos(currentShape);
+                shapes.Add(currentShape);
+            }
+            
             return true;
         }
 
@@ -208,7 +224,7 @@ namespace TetrisLibrary
                                 {
                                     canMove = true;
                                 }
-//INDEXOUTOFBOUNDEXCEPTION
+//INDEXOUTOFBOUNDEXCEPTION néhanapján
                                 else if (component.X == MAPWIDTH-1 || component.X + i >= MAPWIDTH ||
                                     (fields[component.X + i, component.Y] != null &&
                                     !shape.Components.Contains(fields[component.X + i, component.Y])))
@@ -266,7 +282,7 @@ namespace TetrisLibrary
             isRotating = true;
             bool canRotate = true;
 
-            Shape testShape = current.GetCopy();
+            Shape testShape = currentShape.GetCopy();
             testShape.RotateRight();
             AlignShapeBackToMap(testShape);
 
@@ -276,7 +292,7 @@ namespace TetrisLibrary
                 if(fields[component.X, component.Y] != null)
                 {
                     Log("Van ott valami");
-                    if (fields[component.X, component.Y].Shape != current)
+                    if (fields[component.X, component.Y].Shape != currentShape)
                     {
                         Log("Nem én vagyok ott");
                         canRotate = false;
@@ -286,9 +302,9 @@ namespace TetrisLibrary
 
             if(canRotate)
             {
-                current.RotateRight();
-                AlignShapeBackToMap(current);
-                UpdateShapePos(current);
+                currentShape.RotateRight();
+                AlignShapeBackToMap(currentShape);
+                UpdateShapePos(currentShape);
                 DrawMapToConsole();
             } else
             {
@@ -346,7 +362,7 @@ namespace TetrisLibrary
                 {
                     if (fields[x, y] != null)
                     {
-                        if(fields[x, y].Shape == current)
+                        if(fields[x, y].Shape == currentShape)
                         {
                             Console.Write("X");
                         } else
@@ -420,6 +436,7 @@ namespace TetrisLibrary
             {
                 if(!CreateShape())
                 {
+                    Log("Couldn't create new shape. Game over!");
                     EndGame();
                     return true;
                 }
@@ -460,9 +477,11 @@ namespace TetrisLibrary
                             things.toRemoveShapes.Add(shape);
                         }
                     }
-                    score += MAPWIDTH * 10;
                 }
             }
+            int rows = things.rowsDeleted.Count;
+            lines += rows;
+            score += (int)Math.Pow(rows, 2)*100;
             return things.rowsDeleted.Count > 0;
         }
 
