@@ -10,7 +10,9 @@
 [x] Bind score to GUI
 [x] Display the next shape
 [x] Bind lines to GUI
+[x] Add logos
+[x] Add timer to GUI (play time)
 
 NEXT:
-[ ] Add logos
 [ ] Add Unit tests
+[ ] Make (interactive) tutorial page

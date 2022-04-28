@@ -15,16 +15,23 @@ namespace TetrisUWP
     public sealed partial class GamePage : Page
     {
         private GameEngine game;
-        private Timer timer;
+        private Timer gameTimer;
+        private Timer elapsedTimer;
+        private DateTime gameTime;
         private List<KeyboardAccelerator> buttons;
 
         public GamePage()
         {
             buttons = new List<KeyboardAccelerator>();
+            gameTime = new DateTime(2022, 04, 28, 0, 0, 0);
 
-            timer = new Timer(500);
-            timer.Elapsed += OnTimerTick;
-            timer.AutoReset = true;
+            gameTimer = new Timer(500);
+            gameTimer.Elapsed += OnTimerTick;
+            gameTimer.AutoReset = true;
+
+            elapsedTimer = new Timer(1000);
+            elapsedTimer.Elapsed += OnElapsedTimerTick;
+            elapsedTimer.AutoReset = true;
 
             InitializeComponent();
             InitKeyboard();
@@ -43,12 +50,14 @@ namespace TetrisUWP
         {
             ToggleKeyboard(true);
             game.Start();
-            timer.Enabled = true;
+            gameTimer.Start();
+            elapsedTimer.Start();
         }
 
         private void EndGame()
         {
-            timer.Stop();
+            gameTimer.Stop();
+            elapsedTimer.Stop();
             ToggleKeyboard(false);
         }
 
@@ -212,6 +221,16 @@ namespace TetrisUWP
             }
              UpdateGUI();
         }
+
+        public void OnElapsedTimerTick(Object sender, ElapsedEventArgs e)
+        {
+            gameTime = gameTime.AddSeconds(1);
+            _ = Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+            {
+                text_elapsedTime.Text = gameTime.ToString("mm:ss");
+            });
+        }
+
 
         //Controls
         private void MoveLeft(KeyboardAccelerator sender, KeyboardAcceleratorInvokedEventArgs args)

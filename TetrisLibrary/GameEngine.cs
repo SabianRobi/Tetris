@@ -413,6 +413,7 @@ namespace TetrisLibrary
                         createNewShape = true;
                         moveShapesDown = ExamineRows(things);
                         Log("Got the value back: " + moveShapesDown);
+                        score += 5;
                     }
                 }
             }
