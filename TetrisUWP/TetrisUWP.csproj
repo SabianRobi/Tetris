@@ -137,6 +137,14 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Assets\background.jpg" />
+    <Content Include="Assets\Controls\A.png" />
+    <Content Include="Assets\Controls\D.png" />
+    <Content Include="Assets\Controls\DOWN.png" />
+    <Content Include="Assets\Controls\LEFT.png" />
+    <Content Include="Assets\Controls\RIGHT.png" />
+    <Content Include="Assets\Controls\S.png" />
+    <Content Include="Assets\Controls\UP.png" />
+    <Content Include="Assets\Controls\W.png" />
     <Content Include="Properties\Default.rd.xml" />
     <Content Include="Assets\LockScreenLogo.scale-200.png" />
     <Content Include="Assets\SplashScreen.scale-200.png" />

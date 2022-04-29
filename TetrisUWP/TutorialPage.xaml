@@ -9,6 +9,69 @@
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
     <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="1*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="auto"/>
+            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="auto"/>
+            <ColumnDefinition Width="1*"/>
+        </Grid.ColumnDefinitions>
+        <StackPanel Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center">
+            <TextBlock FontFamily="Big John" FontSize="40" FontWeight="Bold" Text="Description"/>
+            <TextBlock FontFamily="Bahnschrift" FontSize="22" Margin="20,0,0,0" Text="You have to complete lines by different shapes."/>
+            <TextBlock FontFamily="Bahnschrift" FontSize="22" Margin="20,0,0,0" Text="When a line completed, it disappears and gives you points."/>
+            <TextBlock FontFamily="Bahnschrift" FontSize="22" Margin="20,0,0,0" Text="There is only one shape at once that you can control."/>
+            <TextBlock FontFamily="Bahnschrift" FontSize="22" Margin="20,0,0,0" Text="The game ends when a new shape couldn't be created, &#x0a; which means the map is full."/>
+        </StackPanel>
+        <StackPanel Grid.Row="1" Grid.Column="3" HorizontalAlignment="Center">
+            <TextBlock FontFamily="Big John" FontSize="40" FontWeight="Bold" Text="Score system"/>
+            <TextBlock FontFamily="Bahnschrift" FontSize="22" Margin="20,0,0,0" Text="You get points for"/>
+            <TextBlock FontFamily="Bahnschrift" FontSize="22" Margin="40,0,0,0" Text="Each shape arrived down"/>
+            <TextBlock FontFamily="Bahnschrift" FontSize="22" Margin="40,0,0,0" Text="Each row completed (more rows at once more points)"/>
+        </StackPanel>
+        <StackPanel Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="3" HorizontalAlignment="Center">
+            <TextBlock FontFamily="Big John" FontSize="40" FontWeight="Bold" Text="Controls" HorizontalAlignment="Center" Margin="0,0,0,20"/>
+            
+            <StackPanel Orientation="Horizontal">
+                <StackPanel Orientation="Vertical">
+                    <StackPanel Orientation="Horizontal" Margin="0,0,0,20">
+                        <Image Source="Assets/Controls/W.png" Width="75" Margin="0,0,20,0"/>
+                        <Image Source="Assets/Controls/UP.png" Width="75" Margin="0,0,20,0"/>
+                        <TextBlock FontFamily="Bahnschrift" FontSize="40" Text="Rotate shape" VerticalAlignment="Center"/>
+                    </StackPanel>
 
+                    <StackPanel Orientation="Horizontal">
+                        <Image Source="Assets/Controls/A.png" Width="75" Margin="0,0,20,0"/>
+                        <Image Source="Assets/Controls/LEFT.png" Width="75" Margin="0,0,20,0"/>
+                        <TextBlock FontFamily="Bahnschrift" FontSize="40" Text="Move shape left" VerticalAlignment="Center"/>
+                    </StackPanel>
+                </StackPanel>
+                
+                <StackPanel Orientation="Vertical" Margin="40,0,0,0">
+                    <StackPanel Orientation="Horizontal" Margin="0,0,0,20">
+                        <Image Source="Assets/Controls/DOWN.png" Width="75" Margin="0,0,20,0"/>
+                        <Image Source="Assets/Controls/S.png" Width="75" Margin="0,0,20,0"/>
+                        <TextBlock FontFamily="Bahnschrift" FontSize="40" Text="Move shape down" VerticalAlignment="Center"/>
+                    </StackPanel>
+
+                    <StackPanel Orientation="Horizontal">
+                        <Image Source="Assets/Controls/RIGHT.png" Width="75" Margin="0,0,20,0"/>
+                        <Image Source="Assets/Controls/D.png" Width="75" Margin="0,0,20,0"/>
+                        <TextBlock FontFamily="Bahnschrift" FontSize="40" Text="Move shape right" VerticalAlignment="Center"/>
+                    </StackPanel>
+                </StackPanel>
+            </StackPanel>
+            
+
+            
+
+        </StackPanel>
     </Grid>
 </Page>

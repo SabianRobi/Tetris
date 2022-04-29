@@ -14,5 +14,5 @@
 [x] Add timer to GUI (play time)
 
 NEXT:
-[ ] Add Unit tests
 [ ] Make (interactive) tutorial page
+[ ] Add Unit tests
