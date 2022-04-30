@@ -12,7 +12,8 @@
 [x] Bind lines to GUI
 [x] Add logos
 [x] Add timer to GUI (play time)
+[x] Make tutorial page
+[x] Make end game
 
 NEXT:
-[ ] Make (interactive) tutorial page
 [ ] Add Unit tests

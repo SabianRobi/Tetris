@@ -35,7 +35,7 @@
                 FontFamily="Big John" FontSize="48" FontWeight="Bold" Content="Play" Foreground="White"/>
         <Button x:Name="btn_Quit" Grid.Column="1" Grid.Row="5" Click="btn_Tutorial_Click"
                 Background="#00000000" HorizontalAlignment="Center" VerticalAlignment="Center"
-                FontFamily="Big John" FontSize="48" FontWeight="Bold" Content="Tutorial" Foreground="White"/>
+                FontFamily="Big John" FontSize="48" FontWeight="Bold" Content="Info" Foreground="White"/>
         <Button x:Name="btn_Tutorial" Grid.Column="1" Grid.Row="7" Click="btn_Quit_Click"
                 Background="#00000000" HorizontalAlignment="Center" VerticalAlignment="Center"
                 FontFamily="Big John" FontSize="48" FontWeight="Bold" Content="Quit" Foreground="White"/>

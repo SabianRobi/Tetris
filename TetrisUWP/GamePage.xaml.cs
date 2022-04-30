@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Threading.Tasks;
+using System.Collections.Generic;
 using System.Timers;
 using TetrisLibrary;
 using TetrisLibrary.Misc;
@@ -8,7 +8,6 @@ using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Shapes;
-using System.Collections.Generic;
 
 namespace TetrisUWP
 {
@@ -19,8 +18,15 @@ namespace TetrisUWP
         private Timer elapsedTimer;
         private DateTime gameTime;
         private List<KeyboardAccelerator> buttons;
+        private GUIData data;
 
         public GamePage()
+        {
+            Init();
+            StartGame();
+        }
+
+        private void Init()
         {
             buttons = new List<KeyboardAccelerator>();
             gameTime = new DateTime(2022, 04, 28, 0, 0, 0);
@@ -36,14 +42,14 @@ namespace TetrisUWP
             InitializeComponent();
             InitKeyboard();
 
+            data = new GUIData();
             game = new GameEngine();
+            DataContext = data;
 
             //GoBack button windows
             var view = SystemNavigationManager.GetForCurrentView();
             view.AppViewBackButtonVisibility = AppViewBackButtonVisibility.Visible;
             view.BackRequested += GoBack;
-
-            StartGame();
         }
 
         private void StartGame()
@@ -127,58 +133,73 @@ namespace TetrisUWP
 
         private void UpdateGUI()
         {
-            _ =  Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
-            {
-                //Main canvas
-                canvas.Children.Clear();
-                double pixelWidth = canvas.Width;
-                double pixelHeight = canvas.Height;
-                try
-                {
-                    foreach (TetrisLibrary.Shape shape in game.GetShapes())
-                    {
-                        foreach (ShapeComponent component in shape.Components)
-                        {
-                            Rectangle rct = new Rectangle
-                            {
-                                Width = 30,
-                                Height = 30,
-                                Fill = GetColor(shape),
-                                StrokeThickness = 1,
-                                Stroke = new SolidColorBrush(Windows.UI.Colors.Black)
+            _ = Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+           {
+               //Data
+               if (game.GetScore() != data.Score)
+               {
+                   data.Score = game.GetScore();
+               }
+               if (game.GetLines() != data.Lines)
+               {
+                   data.Lines = game.GetLines();
+               }
+               if (game.GetNextShape() != data.NextShape)
+               {
+                   data.NextShape = game.GetNextShape();
+               }
 
-                            };
-                            Canvas.SetLeft(rct, component.X * 30);
-                            Canvas.SetTop(rct, 570 - component.Y * 30);
-                            canvas.Children.Add(rct);
-                        }
-                    }
-                } catch (Exception e) {}
+               //Main canvas
+               canvas.Children.Clear();
+               double pixelWidth = canvas.Width;
+               double pixelHeight = canvas.Height;
+               try
+               {
+                   foreach (TetrisLibrary.Shape shape in game.GetShapes())
+                   {
+                       foreach (ShapeComponent component in shape.Components)
+                       {
+                           Rectangle rct = new Rectangle
+                           {
+                               Width = 30,
+                               Height = 30,
+                               Fill = GetColor(shape),
+                               StrokeThickness = 1,
+                               Stroke = new SolidColorBrush(Windows.UI.Colors.Black)
 
-                //Next shape
-                canvas_nextShape.Children.Clear();
-                foreach (ShapeComponent component in game.nextShape.Components)
-                {
-                    Rectangle rct = new Rectangle
-                    {
-                        Width = 30,
-                        Height = 30,
-                        Fill = GetColor(game.nextShape),
-                        StrokeThickness = 1,
-                        Stroke = new SolidColorBrush(Windows.UI.Colors.Black)
+                           };
+                           Canvas.SetLeft(rct, component.X * 30);
+                           Canvas.SetTop(rct, 570 - component.Y * 30);
+                           canvas.Children.Add(rct);
+                       }
+                   }
+               }
+               catch (Exception e)
+               {
+                   e.ToString();
+               }
 
-                    };
-                    Canvas.SetLeft(rct, component.X * 30);
-                    Canvas.SetTop(rct, 90 - component.Y * 30);
-                    canvas_nextShape.Children.Add(rct);
-                }
+               //Next shape
 
-                //Score
-                txt_score.Text = game.score.ToString();
+               canvas_nextShape.Children.Clear();
+               while (game.nextShape == null) { }
+               foreach (ShapeComponent component in game.nextShape.Components)
+               {
+                   Rectangle rct = new Rectangle
+                   {
+                       Width = 30,
+                       Height = 30,
+                       Fill = GetColor(game.nextShape),
+                       StrokeThickness = 1,
+                       Stroke = new SolidColorBrush(Windows.UI.Colors.Black)
 
-                //Lines
-                txt_lines.Text = game.lines.ToString();
-            });
+                   };
+                   Canvas.SetLeft(rct, component.X * 30);
+                   Canvas.SetTop(rct, 90 - component.Y * 30);
+                   canvas_nextShape.Children.Add(rct);
+               }
+
+           });
         }
 
         private SolidColorBrush GetColor(TetrisLibrary.Shape shape)
@@ -187,14 +208,17 @@ namespace TetrisUWP
             switch (shape.Type)
             {
                 case ShapeEnum.I:
+                case ShapeEnum.D:
                     color = new SolidColorBrush(Windows.UI.Colors.LightBlue);
                     break;
                 case ShapeEnum.O:
+                case ShapeEnum.Smiley:
                     color = new SolidColorBrush(Windows.UI.Colors.Yellow);
                     break;
                 case ShapeEnum.T:
                     color = new SolidColorBrush(Windows.UI.Colors.MediumPurple);
                     break;
+                case ShapeEnum.N:
                 case ShapeEnum.S:
                     color = new SolidColorBrush(Windows.UI.Colors.LightGreen);
                     break;
@@ -205,6 +229,7 @@ namespace TetrisUWP
                     color = new SolidColorBrush(Windows.UI.Colors.DeepSkyBlue);
                     break;
                 case ShapeEnum.L:
+                case ShapeEnum.E:
                     color = new SolidColorBrush(Windows.UI.Colors.Orange);
                     break;
                 default:
@@ -215,11 +240,11 @@ namespace TetrisUWP
 
         public void OnTimerTick(Object source, ElapsedEventArgs e)
         {
-            if(game.SimulateTimerTick())
+            if (game.SimulateTimerTick())
             {
                 EndGame();
             }
-             UpdateGUI();
+            UpdateGUI();
         }
 
         public void OnElapsedTimerTick(Object sender, ElapsedEventArgs e)
@@ -262,11 +287,12 @@ namespace TetrisUWP
 
         private void GoBack(object sender, BackRequestedEventArgs e)
         {
-            if(Frame.CanGoBack)
+            if (Frame.CanGoBack)
             {
                 Frame.GoBack();
                 e.Handled = true;
-            } else
+            }
+            else
             {
                 e.Handled = false;
             }

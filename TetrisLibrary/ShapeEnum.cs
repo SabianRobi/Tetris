@@ -8,6 +8,10 @@
         S,
         Z,
         J,
-        L
+        L,
+        E,
+        N,
+        D,
+        Smiley
     }
 }

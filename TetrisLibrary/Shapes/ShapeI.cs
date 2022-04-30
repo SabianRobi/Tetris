@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using TetrisLibrary.Misc;
 
 namespace TetrisLibrary.Shapes
@@ -21,7 +20,6 @@ namespace TetrisLibrary.Shapes
             switch (Facing)
             {
                 case Direction.UP:
-                    Console.Write("gut");
                     poss.Add(new IPoint(1, 2, -1));
                     poss.Add(new IPoint(2, 1, 0));
                     poss.Add(new IPoint(3, 0, 1));

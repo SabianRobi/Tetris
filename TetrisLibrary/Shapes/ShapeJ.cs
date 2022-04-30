@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using TetrisLibrary.Misc;
 
-
 namespace TetrisLibrary.Shapes
 {
     internal class ShapeJ : Shape

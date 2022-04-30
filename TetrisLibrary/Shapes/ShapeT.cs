@@ -13,6 +13,7 @@ namespace TetrisLibrary.Shapes
             Components.Add(new ShapeComponent(1, 1, 3, this));
             Components.Add(new ShapeComponent(2, 1, 4, this));
         }
+
         public override List<IPoint> AfterRotateRightPoss()
         {
             List<IPoint> poss = new List<IPoint>();

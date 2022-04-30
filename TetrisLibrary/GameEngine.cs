@@ -100,7 +100,7 @@ namespace TetrisLibrary
                 shapeEnum = (ShapeEnum)o;
             } else
             {
-                shapeEnum = (ShapeEnum)GetRandomNumber(0, Enum.GetValues(typeof(ShapeEnum)).Length - 1);
+                shapeEnum = (ShapeEnum)GetRandomNumber(0, Enum.GetValues(typeof(ShapeEnum)).Length - 5);
             }
             Shape newShape = null;
 
@@ -438,7 +438,7 @@ namespace TetrisLibrary
                 if(!CreateShape())
                 {
                     Log("Couldn't create new shape. Game over!");
-                    EndGame();
+                    End();
                     return true;
                 }
             }
@@ -512,12 +512,61 @@ namespace TetrisLibrary
             }
         }
 
-        private void EndGame()
+        private void End()
         {
             if(isConsole)
             {
                 timer.Stop();
             }
+            ShowEndShapes();
+            DrawMapToConsole();
+        }
+
+        public int GetLines()
+        {
+            return lines;
+        }
+
+        public int GetScore()
+        {
+            return score;
+        }
+
+        public Shape GetNextShape()
+        {
+            return nextShape;
+        }
+
+        private void ShowEndShapes()
+        {
+            nextShape = new ShapeSmiley();
+
+            shapes.Clear();
+            for (int x = 0; x < MAPWIDTH; x++)
+            {
+                for (int y = 0; y < MAPHEIGHT; y++)
+                {
+                    fields[x, y] = null;
+                }
+            }
+
+            Shape E = new ShapeE();
+            E.Move(Direction.RIGHT, 3);
+            E.Move(Direction.UP, 14);
+            shapes.Add(E);
+            UpdateShapePos(E);
+
+            Shape N = new ShapeN();
+            N.Move(Direction.RIGHT, 3);
+            N.Move(Direction.UP, 8);
+            shapes.Add(N);
+            UpdateShapePos(N);
+
+            Shape D = new ShapeD();
+            D.Move(Direction.RIGHT, 3);
+            D.Move(Direction.UP, 2);
+            shapes.Add(D);
+            UpdateShapePos(D);
         }
 
         private void Log(String s)
