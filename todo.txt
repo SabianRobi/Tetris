@@ -14,6 +14,3 @@
 [x] Add timer to GUI (play time)
 [x] Make tutorial page
 [x] Make end game
-
-NEXT:
-[ ] Add Unit tests
