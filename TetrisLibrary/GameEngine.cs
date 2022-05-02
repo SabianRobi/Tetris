@@ -11,20 +11,19 @@ namespace TetrisLibrary
     {
         private const int MAPHEIGHT = 20;
         private const int MAPWIDTH = 10;
-        private Point MAPCENTER = new Point(MAPWIDTH / 2, MAPHEIGHT - 1);
+        private readonly Point MAPCENTER = new Point(MAPWIDTH / 2, MAPHEIGHT - 1);
         private List<Shape> shapes;
         private ShapeComponent[,] fields;
         private RandomNumberGenerator rng;
         private byte[] randNum;
-        private int tick;
-        public Shape currentShape { get; private set; }
-        public Shape nextShape { get; private set; }
+        public Shape CurrentShape { get; private set; }
+        public Shape NextShape { get; private set; }
         private bool isConsole;
         private Timer timer;
         private bool isRotating;
         private bool isMoving;
-        public int score { get; private set; }
-        public int lines { get; private set; }
+        public int Score { get; private set; }
+        public int Lines { get; private set; }
         private bool debug;
 
         public GameEngine(bool isConsole = false, bool debug = false) {
@@ -44,9 +43,8 @@ namespace TetrisLibrary
             }
             rng = RandomNumberGenerator.Create();
             randNum = new byte[4];
-            tick = 0;
-            currentShape = null;
-            nextShape = null;
+            CurrentShape = null;
+            NextShape = null;
             this.isConsole = isConsole;
             if (isConsole)
             {
@@ -60,7 +58,7 @@ namespace TetrisLibrary
             }
             isRotating = false;
             isMoving = false;
-            score = 0;
+            Score = 0;
         }
 
         public void Start()
@@ -76,10 +74,10 @@ namespace TetrisLibrary
                     key = Console.ReadKey();
                     if (key.Key == ConsoleKey.LeftArrow || key.Key == ConsoleKey.A)
                     {
-                        MoveShape(currentShape, Direction.LEFT);
+                        MoveShape(CurrentShape, Direction.LEFT);
                     } else if (key.Key == ConsoleKey.RightArrow || key.Key == ConsoleKey.D)
                     {
-                        MoveShape(currentShape, Direction.RIGHT);
+                        MoveShape(CurrentShape, Direction.RIGHT);
                     } else if (key.Key == ConsoleKey.UpArrow || key.Key == ConsoleKey.W)
                     {
                         RotateRight();
@@ -129,24 +127,24 @@ namespace TetrisLibrary
                     break;
             }
             
-            currentShape = nextShape;
-            nextShape = newShape;
-            if(currentShape == null)
+            CurrentShape = NextShape;
+            NextShape = newShape;
+            if(CurrentShape == null)
             {
                 CreateShape();
             }
             else
             {
-                currentShape.MoveShapeTopTo(MAPCENTER);
-                if (currentShape.Components.Exists(comp =>
+                CurrentShape.MoveShapeTopTo(MAPCENTER);
+                if (CurrentShape.Components.Exists(comp =>
                 {
                     return fields[comp.X, comp.Y] != null;
                 }))
                 {
                     return false;
                 }
-                UpdateShapePos(currentShape);
-                shapes.Add(currentShape);
+                UpdateShapePos(CurrentShape);
+                shapes.Add(CurrentShape);
             }
             
             return true;
@@ -282,7 +280,7 @@ namespace TetrisLibrary
             isRotating = true;
             bool canRotate = true;
 
-            Shape testShape = currentShape.GetCopy();
+            Shape testShape = CurrentShape.GetCopy();
             testShape.RotateRight();
             AlignShapeBackToMap(testShape);
 
@@ -292,7 +290,7 @@ namespace TetrisLibrary
                 if(fields[component.X, component.Y] != null)
                 {
                     Log("Van ott valami");
-                    if (fields[component.X, component.Y].Shape != currentShape)
+                    if (fields[component.X, component.Y].Shape != CurrentShape)
                     {
                         Log("Nem én vagyok ott");
                         canRotate = false;
@@ -302,9 +300,9 @@ namespace TetrisLibrary
 
             if(canRotate)
             {
-                currentShape.RotateRight();
-                AlignShapeBackToMap(currentShape);
-                UpdateShapePos(currentShape);
+                CurrentShape.RotateRight();
+                AlignShapeBackToMap(CurrentShape);
+                UpdateShapePos(CurrentShape);
                 DrawMapToConsole();
             } else
             {
@@ -362,7 +360,7 @@ namespace TetrisLibrary
                 {
                     if (fields[x, y] != null)
                     {
-                        if(fields[x, y].Shape == currentShape)
+                        if(fields[x, y].Shape == CurrentShape)
                         {
                             Console.Write("X");
                         } else
@@ -398,7 +396,6 @@ namespace TetrisLibrary
         public bool SimulateTimerTick()
         {
             while (isRotating || isMoving) { }
-            tick++;
             bool createNewShape = false;
             bool moveShapesDown = false;
             ExamineThings things = new ExamineThings();
@@ -413,7 +410,7 @@ namespace TetrisLibrary
                         createNewShape = true;
                         moveShapesDown = ExamineRows(things);
                         Log("Got the value back: " + moveShapesDown);
-                        score += 5;
+                        Score += 5;
                     }
                 }
             }
@@ -481,8 +478,8 @@ namespace TetrisLibrary
                 }
             }
             int rows = things.rowsDeleted.Count;
-            lines += rows;
-            score += (int)Math.Pow(rows, 2)*100;
+            Lines += rows;
+            Score += (int)Math.Pow(rows, 2)*100;
             return things.rowsDeleted.Count > 0;
         }
 
@@ -524,22 +521,22 @@ namespace TetrisLibrary
 
         public int GetLines()
         {
-            return lines;
+            return Lines;
         }
 
         public int GetScore()
         {
-            return score;
+            return Score;
         }
 
         public Shape GetNextShape()
         {
-            return nextShape;
+            return NextShape;
         }
 
         private void ShowEndShapes()
         {
-            nextShape = new ShapeSmiley();
+            NextShape = new ShapeSmiley();
 
             shapes.Clear();
             for (int x = 0; x < MAPWIDTH; x++)

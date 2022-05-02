@@ -10,12 +10,12 @@
   <Identity
     Name="d4b5dea0-245b-4a3f-b5d1-83a54010602d"
     Publisher="CN=Robi"
-    Version="1.0.4.0" />
+    Version="1.1.4.0" />
 
   <mp:PhoneIdentity PhoneProductId="d4b5dea0-245b-4a3f-b5d1-83a54010602d" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
 
   <Properties>
-    <DisplayName>TetrisUWP</DisplayName>
+    <DisplayName>Tetris</DisplayName>
     <PublisherDisplayName>Robi</PublisherDisplayName>
     <Logo>Assets\StoreLogo.png</Logo>
   </Properties>

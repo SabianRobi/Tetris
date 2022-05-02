@@ -72,42 +72,58 @@ namespace TetrisUWP
             _ = Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
             {
                 //Move left
-                KeyboardAccelerator moveLeftArrow = new KeyboardAccelerator();
-                moveLeftArrow.Key = Windows.System.VirtualKey.Left;
+                KeyboardAccelerator moveLeftArrow = new KeyboardAccelerator
+                {
+                    Key = Windows.System.VirtualKey.Left
+                };
                 moveLeftArrow.Invoked += MoveLeft;
                 buttons.Add(moveLeftArrow);
-                KeyboardAccelerator moveLeftKeyboard = new KeyboardAccelerator();
-                moveLeftKeyboard.Key = Windows.System.VirtualKey.A;
+                KeyboardAccelerator moveLeftKeyboard = new KeyboardAccelerator
+                {
+                    Key = Windows.System.VirtualKey.A
+                };
                 moveLeftKeyboard.Invoked += MoveLeft;
                 buttons.Add(moveLeftKeyboard);
 
                 //Move right
-                KeyboardAccelerator moveRightArrow = new KeyboardAccelerator();
-                moveRightArrow.Key = Windows.System.VirtualKey.Right;
+                KeyboardAccelerator moveRightArrow = new KeyboardAccelerator
+                {
+                    Key = Windows.System.VirtualKey.Right
+                };
                 moveRightArrow.Invoked += MoveRight;
                 buttons.Add(moveRightArrow);
-                KeyboardAccelerator moveRightKeyboard = new KeyboardAccelerator();
-                moveRightKeyboard.Key = Windows.System.VirtualKey.D;
+                KeyboardAccelerator moveRightKeyboard = new KeyboardAccelerator
+                {
+                    Key = Windows.System.VirtualKey.D
+                };
                 moveRightKeyboard.Invoked += MoveRight;
                 buttons.Add(moveRightKeyboard);
 
                 //Move down
-                KeyboardAccelerator moveDownArrow = new KeyboardAccelerator();
-                moveDownArrow.Key = Windows.System.VirtualKey.Down;
+                KeyboardAccelerator moveDownArrow = new KeyboardAccelerator
+                {
+                    Key = Windows.System.VirtualKey.Down
+                };
                 moveDownArrow.Invoked += MoveDown;
                 buttons.Add(moveDownArrow);
-                KeyboardAccelerator moveDownKeyboard = new KeyboardAccelerator();
-                moveDownKeyboard.Key = Windows.System.VirtualKey.S;
+                KeyboardAccelerator moveDownKeyboard = new KeyboardAccelerator
+                {
+                    Key = Windows.System.VirtualKey.S
+                };
                 moveDownKeyboard.Invoked += MoveDown;
                 buttons.Add(moveDownKeyboard);
 
                 //Rotate
-                KeyboardAccelerator rotateArrow = new KeyboardAccelerator();
-                rotateArrow.Key = Windows.System.VirtualKey.Up;
+                KeyboardAccelerator rotateArrow = new KeyboardAccelerator
+                {
+                    Key = Windows.System.VirtualKey.Up
+                };
                 rotateArrow.Invoked += Rotate;
                 buttons.Add(rotateArrow);
-                KeyboardAccelerator rotateKeyboard = new KeyboardAccelerator();
-                rotateKeyboard.Key = Windows.System.VirtualKey.W;
+                KeyboardAccelerator rotateKeyboard = new KeyboardAccelerator
+                {
+                    Key = Windows.System.VirtualKey.W
+                };
                 rotateKeyboard.Invoked += Rotate;
                 buttons.Add(rotateKeyboard);
             });
@@ -182,14 +198,14 @@ namespace TetrisUWP
                //Next shape
 
                canvas_nextShape.Children.Clear();
-               while (game.nextShape == null) { }
-               foreach (ShapeComponent component in game.nextShape.Components)
+               while (game.NextShape == null) { }
+               foreach (ShapeComponent component in game.NextShape.Components)
                {
                    Rectangle rct = new Rectangle
                    {
                        Width = 30,
                        Height = 30,
-                       Fill = GetColor(game.nextShape),
+                       Fill = GetColor(game.NextShape),
                        StrokeThickness = 1,
                        Stroke = new SolidColorBrush(Windows.UI.Colors.Black)
 
@@ -260,13 +276,13 @@ namespace TetrisUWP
         //Controls
         private void MoveLeft(KeyboardAccelerator sender, KeyboardAcceleratorInvokedEventArgs args)
         {
-            game.MoveShape(game.currentShape, Direction.LEFT);
+            game.MoveShape(game.CurrentShape, Direction.LEFT);
             UpdateGUI();
         }
 
         private void MoveRight(KeyboardAccelerator sender, KeyboardAcceleratorInvokedEventArgs args)
         {
-            game.MoveShape(game.currentShape, Direction.RIGHT);
+            game.MoveShape(game.CurrentShape, Direction.RIGHT);
             UpdateGUI();
         }
 
