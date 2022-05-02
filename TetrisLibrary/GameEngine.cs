@@ -12,7 +12,7 @@ namespace TetrisLibrary
         private const int MAPHEIGHT = 20;
         private const int MAPWIDTH = 10;
         private readonly Point MAPCENTER = new Point(MAPWIDTH / 2, MAPHEIGHT - 1);
-        private List<Shape> shapes;
+        public List<Shape> Shapes { get; private set; }
         private ShapeComponent[,] fields;
         private RandomNumberGenerator rng;
         private byte[] randNum;
@@ -32,7 +32,7 @@ namespace TetrisLibrary
 
         private void Init(bool isConsole, bool debug)
         {
-            shapes = new List<Shape>();
+            Shapes = new List<Shape>();
             fields = new ShapeComponent[MAPWIDTH, MAPHEIGHT];
             for (int x = 0; x < MAPWIDTH; x++)
             {
@@ -51,8 +51,7 @@ namespace TetrisLibrary
                 timer = new Timer(1000);
                 timer.Elapsed += OnTimerTick;
                 timer.AutoReset = true;
-                if(debug)
-                {
+                if(debug) {
                     this.debug = true;
                 }
             }
@@ -144,7 +143,7 @@ namespace TetrisLibrary
                     return false;
                 }
                 UpdateShapePos(CurrentShape);
-                shapes.Add(CurrentShape);
+                Shapes.Add(CurrentShape);
             }
             
             return true;
@@ -347,12 +346,13 @@ namespace TetrisLibrary
         private void DrawMapToConsole()
         {
             if (!isConsole) return;
-            if(!debug)
-            {
-                Console.Clear();
-            } else
+            if(debug)
             {
                 Console.WriteLine();
+            }
+            else
+            {
+                Console.Clear();
             }
             for (int y = MAPHEIGHT - 1; y >= 0; y--)
             {
@@ -377,11 +377,6 @@ namespace TetrisLibrary
             }
         }
 
-        public List<Shape> GetShapes()
-        {
-            return shapes;
-        }
-
         private int GetRandomNumber(int min, int max)
         {
             rng.GetBytes(randNum);
@@ -399,7 +394,7 @@ namespace TetrisLibrary
             bool createNewShape = false;
             bool moveShapesDown = false;
             ExamineThings things = new ExamineThings();
-            foreach (Shape shape in shapes)
+            foreach (Shape shape in Shapes)
             {
                 if (!shape.IsAtBottom)
                 {
@@ -417,7 +412,7 @@ namespace TetrisLibrary
 
             foreach (Shape shape in things.toRemoveShapes)
             {
-                shapes.Remove(shape);
+                Shapes.Remove(shape);
             }
 
             if (moveShapesDown)
@@ -468,7 +463,7 @@ namespace TetrisLibrary
                         fields[x, y] = null;
                     }
 
-                    foreach (Shape shape in shapes)
+                    foreach (Shape shape in Shapes)
                     {
                         if (shape.Components.Count == 0)
                         {
@@ -485,7 +480,7 @@ namespace TetrisLibrary
 
         private void MoveShapesDown(int y)
         {
-            foreach (Shape shape in shapes)
+            foreach (Shape shape in Shapes)
             {
                 foreach (ShapeComponent component in shape.Components)
                 {
@@ -519,26 +514,11 @@ namespace TetrisLibrary
             DrawMapToConsole();
         }
 
-        public int GetLines()
-        {
-            return Lines;
-        }
-
-        public int GetScore()
-        {
-            return Score;
-        }
-
-        public Shape GetNextShape()
-        {
-            return NextShape;
-        }
-
         private void ShowEndShapes()
         {
             NextShape = new ShapeSmiley();
 
-            shapes.Clear();
+            Shapes.Clear();
             for (int x = 0; x < MAPWIDTH; x++)
             {
                 for (int y = 0; y < MAPHEIGHT; y++)
@@ -550,19 +530,19 @@ namespace TetrisLibrary
             Shape E = new ShapeE();
             E.Move(Direction.RIGHT, 3);
             E.Move(Direction.UP, 14);
-            shapes.Add(E);
+            Shapes.Add(E);
             UpdateShapePos(E);
 
             Shape N = new ShapeN();
             N.Move(Direction.RIGHT, 3);
             N.Move(Direction.UP, 8);
-            shapes.Add(N);
+            Shapes.Add(N);
             UpdateShapePos(N);
 
             Shape D = new ShapeD();
             D.Move(Direction.RIGHT, 3);
             D.Move(Direction.UP, 2);
-            shapes.Add(D);
+            Shapes.Add(D);
             UpdateShapePos(D);
         }
 

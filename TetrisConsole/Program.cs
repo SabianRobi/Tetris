@@ -6,7 +6,7 @@ namespace TetrisConsole
     {
         static void Main(string[] args)
         {
-            GameEngine game = new GameEngine(true, true);
+            GameEngine game = new GameEngine(true, false);
             game.Start();
         }
     }

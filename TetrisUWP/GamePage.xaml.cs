@@ -152,17 +152,17 @@ namespace TetrisUWP
             _ = Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
            {
                //Data
-               if (game.GetScore() != data.Score)
+               if (game.Score != data.Score)
                {
-                   data.Score = game.GetScore();
+                   data.Score = game.Score;
                }
-               if (game.GetLines() != data.Lines)
+               if (game.Lines != data.Lines)
                {
-                   data.Lines = game.GetLines();
+                   data.Lines = game.Lines;
                }
-               if (game.GetNextShape() != data.NextShape)
+               if (game.NextShape != data.NextShape)
                {
-                   data.NextShape = game.GetNextShape();
+                   data.NextShape = game.NextShape;
                }
 
                //Main canvas
@@ -171,7 +171,7 @@ namespace TetrisUWP
                double pixelHeight = canvas.Height;
                try
                {
-                   foreach (TetrisLibrary.Shape shape in game.GetShapes())
+                   foreach (TetrisLibrary.Shape shape in game.Shapes)
                    {
                        foreach (ShapeComponent component in shape.Components)
                        {
